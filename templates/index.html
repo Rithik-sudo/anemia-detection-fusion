@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anemia Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/static.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="text-center mb-0">Anemia Detection System</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                        {% endif %}
+
+                        {% if final_pred is defined %}
+                        <div class="result-container mb-4">
+                            <h4 class="text-center mb-3">Prediction Results</h4>
+                            <div class="progress mb-3" style="height: 25px;">
+                                <div class="progress-bar bg-danger" role="progressbar"
+                                     style="width: {{ (final_pred * 100)|round(1) }}%;"
+                                     aria-valuenow="{{ (final_pred * 100)|round(1) }}"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    {{ (final_pred * 100)|round(1) }}% Probability of Anemia
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header">CNN Model Prediction</div>
+                                        <div class="card-body">
+                                            <h5>{{ (cnn_pred * 100)|round(1) }}%</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header">ML Model Prediction</div>
+                                        <div class="card-body">
+                                            <h5>{{ (ml_pred * 100)|round(1) if ml_pred is defined else 'N/A' }}%</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-3">
+                                <div class="alert {{ 'alert-danger' if final_pred > 0.7 else 'alert-success' }}">
+                                    <strong>{{ 'Anemic' if final_pred > 0.7 else 'Not Anemic' }}</strong>
+                                    ({{ (final_pred * 100)|round(1) }}% confidence)
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <form method="POST" action="/predict" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <h5>Upload Microscopic Blood Image</h5>
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                                </div>
+                                <small class="form-text text-muted">Upload a microscopic image of a blood smear (JPG, PNG formats)</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5>Enter Blood Test Parameters</h5>
+
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender:</label>
+                                    <select class="form-select" id="gender" name="gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="hemoglobin" class="form-label">Hemoglobin (g/dL):</label>
+                                    <input type="number" class="form-control" id="hemoglobin" name="hemoglobin"
+                                           step="0.1" min="0" max="30" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mch" class="form-label">MCH (pg):</label>
+                                    <input type="number" class="form-control" id="mch" name="mch"
+                                           step="0.1" min="0" max="100" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mchc" class="form-label">MCHC (g/dL):</label>
+                                    <input type="number" class="form-control" id="mchc" name="mchc"
+                                           step="0.1" min="0" max="100" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="mcv" class="form-label">MCV (fL):</label>
+                                    <input type="number" class="form-control" id="mcv" name="mcv"
+                                           step="0.1" min="0" max="150" required>
+                                </div>
+
+                                <!-- Hidden field to store the combined values for backward compatibility -->
+                                <input type="hidden" id="tabular_data" name="tabular_data">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Analyze</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+.venv/
+.idea/
+__pycache__/
+*.pyc
+*~
+
+# Large model artifacts (store externally or via Git LFS)
+*.h5
+*.pkl
+*.mp4
+*.docx
+*.csv
