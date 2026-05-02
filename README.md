@@ -9,16 +9,8 @@ A web-based anemia prediction project that combines deep learning feature extrac
 - Git LFS configured for large model assets (`*.h5`, `*.pkl`)
 
 ## UI Showcase
-Add your screenshots to `assets/screenshots/` and they will render here.
-
-### Home Page
-![Home UI](assets/screenshots/home.png)
-
-### Upload + Prediction
-![Prediction UI](assets/screenshots/prediction.png)
-
-### Result Output
-![Result UI](assets/screenshots/result.png)
+### Project Interface
+![Project UI](assets/screenshots/image.png)
 
 ## Folder Structure
 ```text
