@@ -68,6 +68,14 @@ uv add pillow
 - scikit-learn
 - NumPy / Pandas
 
+## Published Paper
+
+**Title:** *PalmSense: Real-Time Anemia Detection Using Deep Learning on Palm Images*  
+**Publisher:** IEEE  
+**Link:** https://ieeexplore.ieee.org/document/10912163
+
+*Note: Full text may require IEEE access.*
+
 ## Author
 
 Rithik
